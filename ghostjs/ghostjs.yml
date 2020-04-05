@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+ name: ghostjs
+  labels:
+    name: ghostjs
+spec:
+  replicas: 1
+  selector:
+    name: ghostjs
+  template:
+    metadata:
+      labels:
+        name: ghostjs
+    spec:
+      containers:
+        - name: ghostjs
+          image: ghost:latest
+          ports:
+            - containerPort: 10101
+          volumeMounts:
+            - name: ghostjs-data
+              mountPath: /var/lib/ghost
+          env:
+            - name: database__client
+              value: "mysql"
+            - name: database__connection__host
+              value: "<host>"
+            - name: database__connection__user
+              value: "root"
+            - name: database__connection__password
+              secretKeyRef:
+                key: MYSQL_ROOT_PASSWORD
+                name: db-secrets
+            - name: database__connection__database
+              value: "ghostjs"
+      volumes:
+        - name: ghostjs-data
+          hostPath:
+            path: /var/www/ghostjs

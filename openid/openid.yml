@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+ name: openid
+  labels:
+    name: openid
+spec:
+  replicas: 1
+  selector:
+    name: openid
+  template:
+    metadata:
+      labels:
+        name: openid
+    spec:
+      containers:
+        - name: openid
+          image: openid:latest
+          ports:
+            - containerPort: 10141
+            - containerPort: 10142
+          volumeMounts:
+            - name: openid-data
+              mountPath: /var/www/
+          env:
+            - name: DNS
+              value: "<dnsurl [ mysql://root:<password>@<ip>/openid ]>"
+            - name: SECRETS_SYSTEM
+              secretKeyRef:
+                key: OPENID_SECRET
+                name: openid-secrets
+            - name: URLS_SELF_ISSUER
+              value: "<url>:10141/"
+            - name: URLS_CONSENT
+              value: "<consens url>"
+            - name: URLS_LOGIN
+              value: "<login url>"
+      volumes:
+        - name: openid-data
+          hostPath:
+            path: /var/www/openid

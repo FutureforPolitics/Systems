@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+ name: mailinabox
+  labels:
+    name: mailinabox
+spec:
+  replicas: 1
+  selector:
+    name: mailinabox
+  template:
+    metadata:
+      labels:
+        name: mailinabox
+    spec:
+      containers:
+        - name: mailinabox
+          image: mtrnord/mailinabox:latest
+          ports:
+            - containerPort: 10121
+          volumeMounts:
+            - name: mailinabox-data
+              mountPath: /home/mailinabox
+          env:
+            - name: STORAGE_ROOT
+              value: "/home/mailinabox"
+      volumes:
+        - name: mailinabox-data
+          hostPath:
+            path: /var/www/mailinabox
