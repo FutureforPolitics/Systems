@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: master
-          image: paulliu/mysql-master:0.1
+          image: mysql-master:0.1
           ports:
             - containerPort: 3306
           volumeMounts:
