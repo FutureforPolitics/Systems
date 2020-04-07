@@ -8,6 +8,7 @@ sudo apt-get upgrade -y 2>&1 >/dev/null
 
 echo "Install the system utils..."
 sudo apt install vim -y 2>&1 >/dev/null
+sudo apt install docker.io -y 2>&1 >/dev/null
 
 echo "Install the snap demon..."
 sudo apt install snapd -y 2>&1 >/dev/null

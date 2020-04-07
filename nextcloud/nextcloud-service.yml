@@ -3,12 +3,16 @@ kind: Service
 metadata:
   name: nextcloud
   labels:
-    name: nextcloud
+    app: nextcloud
 spec:
+  selector:
+    app: nextcloud
   ports:
     - port: 80
       targetPort: 10131
+      name: nextcloud-port-http
     - port: 443
       targetPort: 10132
+      name: nextcloud-port-https
   selector:
       name: nextcloud

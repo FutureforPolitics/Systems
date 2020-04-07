@@ -1,21 +1,23 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
- name: nextcloud
+  name: nextcloud
   labels:
     name: nextcloud
 spec:
   replicas: 1
   selector:
     name: nextcloud
+    matchLabels:
+      app: nextcloud
   template:
     metadata:
       labels:
-        name: nextcloud
+        app: nextcloud
     spec:
       containers:
         - name: nextcloud
-          image: nexcloud:latest
+          image: 'nexcloud:latest'
           ports:
             - containerPort: 10131
           volumeMounts:
@@ -23,15 +25,16 @@ spec:
               mountPath: /var/www/
           env:
             - name: MYSQL_HOST
-              value: "<host>"
+              value: <host>
             - name: MYSQL_USER
-              value: "root"
+              value: root
             - name: MYSQL_PASSWORD
-              secretKeyRef:
-                key: MYSQL_ROOT_PASSWORD
-                name: db-secrets
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_ROOT_PASSWORD
+                  name: db-secrets
             - name: MYSQL_DATABASE
-              value: "nextcloud"
+              value: nextcloud
       volumes:
         - name: nextcloud-data
           hostPath:
